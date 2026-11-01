@@ -1,11 +1,14 @@
 info:
   name: Update a student
   type: http
-  seq: 5
+  seq: 4
 
 http:
   method: PUT
   url: http://localhost:3000/students/1
+  body:
+    type: json
+    data: '{ "name": "Harry Potter", "house_id": 1 }'
   auth: inherit
 
 settings:

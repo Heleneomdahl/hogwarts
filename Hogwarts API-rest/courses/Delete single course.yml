@@ -1,11 +1,11 @@
 info:
   name: Delete single course
   type: http
-  seq: 6
+  seq: 8
 
 http:
   method: DELETE
-  url: http://localhost:3000/courses/1
+  url: http://localhost:3000/courses/5
   auth: inherit
 
 settings:
