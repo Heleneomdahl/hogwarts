@@ -12,39 +12,33 @@
 
 1. Find id'et fra routen (request)
 2. Hent den teacher, der har det id, fra databasen
-3. Send 400, hvis id'et ikke er et tal
-4. Send 404, hvis teacheren ikke findes
-5. Send teacheren tilbage som JSON
-6. Send fejl 500, hvis noget går galt
+3. Send 404, hvis teacheren ikke findes
+4. Send teacheren tilbage som JSON
+5. Send fejl 500, hvis noget går galt
 
 ### PUT teacher
 
 1. Find id'et fra routen (request)
 2. Hent name og house_id fra body
 3. Opdatér teacheren i databasen
-4. Send 400, hvis id'et ikke er et tal, eller name mangler
-5. Send 404, hvis teacheren eller housen ikke findes
-6. Send den opdaterede teacher tilbage som JSON
-7. Send fejl 500, hvis noget går galt
+4. Send 404, hvis teacheren ikke findes
+5. Send den opdaterede teacher tilbage som JSON
+6. Send fejl 500, hvis noget går galt
 
 ### POST teacher
 
 1. Hent name og house_id fra body
 2. Opret teacheren i databasen
-3. Send 400, hvis name mangler
-4. Send 404, hvis housen ikke findes
-5. Send den nye teacher tilbage som JSON med status 201
-6. Send fejl 500, hvis noget går galt
+3. Send den nye teacher tilbage som JSON med status 201
+4. Send fejl 500, hvis noget går galt
 
 ### DELETE teacher
 
 1. Find id'et fra routen (request)
 2. Slet teacheren i databasen
-3. Send 400, hvis id'et ikke er et tal
-4. Send 404, hvis teacheren ikke findes
-5. Send 409, hvis teacheren stadig har courses
-6. Send den slettede teacher tilbage som JSON
-7. Send fejl 500, hvis noget går galt
+3. Send 404, hvis teacheren ikke findes
+4. Send den slettede teacher tilbage som JSON
+5. Send fejl 500, hvis noget går galt
 
 ###### Students
 
@@ -66,7 +60,7 @@ Ligesom POST teacher
 
 ### DELETE student
 
-Ligesom DELETE teacher, men uden 409. Studenten bliver også fjernet fra sine courses.
+Ligesom DELETE teacher. Studenten bliver også fjernet fra sine courses.
 
 ###### Houses
 
@@ -90,39 +84,34 @@ Ligesom GET single teacher
 
 ### POST course
 
-Ligesom POST teacher, men hent name og teacher_id fra body. Send 404, hvis teacheren ikke findes.
+Ligesom POST teacher, men hent name og teacher_id fra body.
 
 ### PUT course
 
-Ligesom PUT teacher, men hent name og teacher_id fra body. Send 404, hvis coursen eller teacheren ikke findes.
+Ligesom PUT teacher, men hent name og teacher_id fra body.
 
 ### PUT teacher for a course
 
 1. Find course-id'et og teacher-id'et fra routen (request)
 2. Opdatér coursens teacher i databasen
-3. Send 400, hvis et id ikke er et tal
-4. Send 404, hvis coursen eller teacheren ikke findes
-5. Send den opdaterede course tilbage som JSON
-6. Send fejl 500, hvis noget går galt
+3. Send 404, hvis coursen ikke findes
+4. Send den opdaterede course tilbage som JSON
+5. Send fejl 500, hvis noget går galt
 
 ### PUT add student to a course
 
 1. Find course-id'et og student-id'et fra routen (request)
 2. Tilføj studenten til coursen i databasen
-3. Send 400, hvis et id ikke er et tal
-4. Send 404, hvis coursen eller studenten ikke findes
-5. Send 409, hvis studenten allerede er på coursen
-6. Send course-id'et og student-id'et tilbage som JSON med status 201
-7. Send fejl 500, hvis noget går galt
+3. Send course-id'et og student-id'et tilbage som JSON med status 201
+4. Send fejl 500, hvis noget går galt
 
 ### DELETE remove student from a course
 
 1. Find course-id'et og student-id'et fra routen (request)
 2. Fjern studenten fra coursen i databasen
-3. Send 400, hvis et id ikke er et tal
-4. Send 404, hvis studenten ikke er på coursen
-5. Send course-id'et og student-id'et tilbage som JSON
-6. Send fejl 500, hvis noget går galt
+3. Send 404, hvis studenten ikke er på coursen
+4. Send course-id'et og student-id'et tilbage som JSON
+5. Send fejl 500, hvis noget går galt
 
 ### DELETE course
 

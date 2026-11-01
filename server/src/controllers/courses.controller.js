@@ -23,9 +23,6 @@ async function getSingleCourseById(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Database error" });
   }
 }
@@ -37,12 +34,6 @@ async function createCourse(req, res) {
     res.status(201).json(course);
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02" || error.code === "23502") {
-      return res.status(400).json({ error: "Invalid or missing data" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "Teacher not found" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -60,12 +51,6 @@ async function updateCourse(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02" || error.code === "23502") {
-      return res.status(400).json({ error: "Invalid or missing data" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "Teacher not found" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -83,12 +68,6 @@ async function setTeacher(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "Teacher not found" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -101,15 +80,6 @@ async function addStudent(req, res) {
     res.status(201).json(added);
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "Course or student not found" });
-    }
-    if (error.code === "23505") {
-      return res.status(409).json({ error: "Student is already on course" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -127,9 +97,6 @@ async function removeStudent(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -146,9 +113,6 @@ async function deleteCourse(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

@@ -23,9 +23,6 @@ async function getSingleStudentById(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Database error" });
   }
 }
@@ -43,12 +40,6 @@ async function updateStudent(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02" || error.code === "23502") {
-      return res.status(400).json({ error: "Invalid or missing data" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "House not found" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -60,12 +51,6 @@ async function createStudent(req, res) {
     res.status(201).json(student);
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02" || error.code === "23502") {
-      return res.status(400).json({ error: "Invalid or missing data" });
-    }
-    if (error.code === "23503") {
-      return res.status(404).json({ error: "House not found" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -82,9 +67,6 @@ async function deleteStudent(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

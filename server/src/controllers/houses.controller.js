@@ -23,9 +23,6 @@ async function getSingleHouseById(req, res) {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === "22P02") {
-      return res.status(400).json({ error: "Invalid id" });
-    }
     res.status(500).json({ error: "Database error" });
   }
 }
