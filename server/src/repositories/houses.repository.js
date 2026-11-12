@@ -17,4 +17,4 @@ async function getHouseById(id) {
   }
 }
 
-export { getAllHouses, getHouseById };
+export { getAllHouses as getAll, getHouseById as getSingle };

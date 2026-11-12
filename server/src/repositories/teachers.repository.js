@@ -59,4 +59,4 @@ async function deleteTeacher(id) {
   }
 }
 
-export { getAllTeachers, getTeacherById, updateTeacher, createTeacher, deleteTeacher };
+export { getAllTeachers as getAll, getTeacherById as getSingle, updateTeacher as update, createTeacher, deleteTeacher };
