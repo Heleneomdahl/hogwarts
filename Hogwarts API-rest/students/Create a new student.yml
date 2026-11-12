@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: http://localhost:3000/students
+  url: "{{baseUrl}}/students"
   body:
     type: json
     data: '{ "name": "Neville Longbottom", "house_id": 1 }'
