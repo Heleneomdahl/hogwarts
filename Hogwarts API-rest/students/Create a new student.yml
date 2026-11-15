@@ -8,7 +8,8 @@ http:
   url: "{{baseUrl}}/students"
   body:
     type: json
-    data: '{ "name": "Neville Longbottom", "house_id": 1 }'
+    data: |
+      { "name": "Neville Longbottom", "house_id": 1, "birthday": "1980-07-30", "school_year": 5 }
   auth: inherit
 
 settings:

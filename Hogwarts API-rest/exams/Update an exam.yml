@@ -1,0 +1,19 @@
+info:
+  name: Update an exam
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/exams/1"
+  body:
+    type: json
+    data: |
+      { "course_id": 2, "student_id": 1, "grade": "O" }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

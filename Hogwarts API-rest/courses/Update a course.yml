@@ -8,7 +8,8 @@ http:
   url: "{{baseUrl}}/courses/1"
   body:
     type: json
-    data: '{ "name": "Transfiguration", "teacher_id": 1 }'
+    data: |
+      { "name": "Transfiguration", "teacher_id": 1, "type": "core", "level": "NEWT", "school_year": 7 }
   auth: inherit
 
 settings:
