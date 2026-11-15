@@ -5,10 +5,10 @@ const router = express.Router();
 
 // houses - get all houses //
 
-router.get("/", housesController.getAllHouses);
+router.get("/", housesController.getAll);
 
 // houses - get a single house //
 
-router.get("/:id", housesController.getSingleHouseById);
+router.get("/:id", housesController.getById);
 
 export default router;
