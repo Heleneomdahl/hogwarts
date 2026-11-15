@@ -1,74 +1,50 @@
 import * as studentsRepository from "../repositories/students.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
+import Dto from "../dtos/student.dto.js";
 
-const getAllStudents = async (req, res) => {
-  try {
-    const allStudents = await studentsRepository.getAllStudents();
-    console.log(allStudents);
-    res.json(allStudents);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error", code: error.code });
-  }
+const getAll = async (req, res) => {
+  const allStudents = await studentsRepository.getAll();
+  console.log(allStudents);
+  res.status(200).json(allStudents);
 };
 
-async function getSingleStudentById(req, res) {
-  try {
-    const id = req.params.id;
-    const student = await studentsRepository.getStudentById(id);
+async function getById(req, res) {
+  const id = req.params.id;
+  const student = await studentsRepository.getById(id);
 
-    if (student) {
-      res.status(200).json(student);
-    } else {
-      res.status(404).json({ error: "Student not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error" });
+  if (student) {
+    return res.status(200).json(student);
   }
+  throw new HTTPError(404, "Student not found");
 }
 
-async function updateStudent(req, res) {
-  try {
-    const id = req.params.id;
-    const { name, house_id } = req.body;
-    const student = await studentsRepository.updateStudent(id, name, house_id);
+async function update(req, res) {
+  const id = req.params.id;
+  const input = req.body;
+  const student = Dto.parse(input);
+  const updatedStudent = await studentsRepository.update(id, student);
 
-    if (student) {
-      res.status(200).json(student);
-    } else {
-      res.status(404).json({ error: "Student not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (updatedStudent) {
+    return res.status(200).json(updatedStudent);
   }
+  throw new HTTPError(404, "Student not found");
 }
 
-async function createStudent(req, res) {
-  try {
-    const { name, house_id } = req.body;
-    const student = await studentsRepository.createStudent(name, house_id);
-    res.status(201).json(student);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+async function create(req, res) {
+  const input = req.body;
+  const student = Dto.parse(input);
+  const newStudent = await studentsRepository.create(student);
+  return res.status(201).json(newStudent);
 }
 
 async function deleteStudent(req, res) {
-  try {
-    const id = req.params.id;
-    const student = await studentsRepository.deleteStudent(id);
+  const id = req.params.id;
+  const student = await studentsRepository.deleteStudent(id);
 
-    if (student) {
-      res.status(200).json(student);
-    } else {
-      res.status(404).json({ error: "Student not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (student) {
+    return res.status(200).json(student);
   }
+  throw new HTTPError(404, "Student not found");
 }
 
-export { getAllStudents, getSingleStudentById, updateStudent, createStudent, deleteStudent };
+export { getAll, getById, update, create, deleteStudent };

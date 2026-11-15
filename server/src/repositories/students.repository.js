@@ -1,15 +1,20 @@
 import pool from "../db.js";
 
 // all students
-async function getAllStudents() {
-  const result = await pool.query("SELECT * FROM hogwarts.students");
+async function getAll() {
+  const result = await pool.query(/*sql*/ `SELECT * FROM hogwarts.students`);
   console.log(result);
   return result.rows;
 }
 
 // get a single student by id
-async function getStudentById(id) {
-  const one = await pool.query("SELECT * FROM hogwarts.students WHERE id = $1", [id]);
+async function getById(id) {
+  const one = await pool.query(
+    /*sql*/
+    `SELECT * FROM hogwarts.students 
+    WHERE id = $1`,
+    [id],
+  );
   if (one.rowCount === 0) {
     return null;
   } else {
@@ -18,13 +23,14 @@ async function getStudentById(id) {
 }
 
 // update a single student
-async function updateStudent(id, name, house_id) {
+async function update(id, newStudentData) {
   const update = await pool.query(
+    /*sql*/
     `UPDATE hogwarts.students
-    SET name = $1, house_id = $2
-    WHERE id = $3
-    RETURNING id, name, house_id`,
-    [name, house_id, id],
+    SET name = $1, house_id = $2, birthday = $3, school_year = $4
+    WHERE id = $5
+    RETURNING id, name, house_id, birthday, school_year`,
+    [newStudentData.name, newStudentData.house_id, newStudentData.birthday, newStudentData.school_year, id],
   );
   if (update.rowCount === 0) {
     return null;
@@ -34,12 +40,13 @@ async function updateStudent(id, name, house_id) {
 }
 
 // create a new student
-async function createStudent(name, house_id) {
+async function create(student) {
   const create = await pool.query(
-    `INSERT INTO hogwarts.students (name, house_id)
-    VALUES ($1, $2)
-    RETURNING id, name, house_id`,
-    [name, house_id],
+    /*sql*/
+    `INSERT INTO hogwarts.students (name, house_id, birthday, school_year)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id, name, house_id, birthday, school_year`,
+    [student.name, student.house_id, student.birthday, student.school_year],
   );
   return create.rows[0];
 }
@@ -47,9 +54,10 @@ async function createStudent(name, house_id) {
 // delete a single student
 async function deleteStudent(id) {
   const remove = await pool.query(
+    /*sql*/
     `DELETE FROM hogwarts.students
     WHERE id = $1
-    RETURNING id, name, house_id`,
+    RETURNING id, name, house_id, birthday, school_year`,
     [id],
   );
   if (remove.rowCount === 0) {
@@ -59,4 +67,4 @@ async function deleteStudent(id) {
   }
 }
 
-export { getAllStudents, getStudentById, updateStudent, createStudent, deleteStudent };
+export { getAll, getById, update, create, deleteStudent };

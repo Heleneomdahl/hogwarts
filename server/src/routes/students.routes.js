@@ -5,19 +5,19 @@ const router = express.Router();
 
 // students - get all students //
 
-router.get("/", studentsController.getAllStudents);
+router.get("/", studentsController.getAll);
 
 // students - get a single student //
 
-router.get("/:id", studentsController.getSingleStudentById);
+router.get("/:id", studentsController.getById);
 
 // students - Update a single student //
 
-router.put("/:id", studentsController.updateStudent);
+router.put("/:id", studentsController.update);
 
 // students - create a new student //
 
-router.post("/", studentsController.createStudent);
+router.post("/", studentsController.create);
 
 // students - delete a single student //
 

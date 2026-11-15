@@ -5,19 +5,19 @@ const router = express.Router();
 
 // courses - get all courses //
 
-router.get("/", coursesController.getAllCourses);
+router.get("/", coursesController.getAll);
 
 // courses - get a single course //
 
-router.get("/:id", coursesController.getSingleCourseById);
+router.get("/:id", coursesController.getById);
 
 // courses - create a new course //
 
-router.post("/", coursesController.createCourse);
+router.post("/", coursesController.create);
 
 // courses - Update a single course //
 
-router.put("/:id", coursesController.updateCourse);
+router.put("/:id", coursesController.update);
 
 // courses - change teacher for a course //
 

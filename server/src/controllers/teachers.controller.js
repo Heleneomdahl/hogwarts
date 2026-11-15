@@ -1,19 +1,16 @@
 import * as teachersRepository from "../repositories/teachers.repository.js";
 import HTTPError from "../errorhandling/HTTPError.js";
+import Dto from "../dtos/teacher.dto.js";
 
-const getAllTeachers = async (req, res) => {
+const getAll = async (req, res) => {
   const allTeachers = await teachersRepository.getAll();
   console.log(allTeachers);
-  res.json(allTeachers);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Database error", code: error.code });
-  // }
+  res.status(200).json(allTeachers);
 };
 
-async function getSingleTeacherById(req, res) {
+async function getById(req, res) {
   const id = req.params.id;
-  const teacher = await teachersRepository.getSingle(id);
+  const teacher = await teachersRepository.getById(id);
 
   if (teacher) {
     return res.status(200).json(teacher);
@@ -21,47 +18,33 @@ async function getSingleTeacherById(req, res) {
   throw new HTTPError(404, "Teacher not found");
 }
 
-async function updateTeacher(req, res) {
-  // try {
+async function update(req, res) {
   const id = req.params.id;
-  const { name, house_id } = req.body;
-  const teacher = await teachersRepository.update(id, name, house_id);
+  const input = req.body;
+  const teacher = Dto.parse(input);
+  const updatedTeacher = await teachersRepository.update(id, teacher);
 
-  if (teacher) {
-    res.status(200).json(teacher);
-  } else {
-    res.status(404).json({ error: "Teacher not found" });
+  if (updatedTeacher) {
+    return res.status(200).json(updatedTeacher);
   }
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Internal Server Error" });
-  // }
+  throw new HTTPError(404, "Teacher not found");
 }
 
-async function createTeacher(req, res) {
-  // try {
-  const { name, house_id } = req.body;
-  const teacher = await teachersRepository.createTeacher(name, house_id);
-  res.status(201).json(teacher);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Internal Server Error" });
-  // }
+async function create(req, res) {
+  const input = req.body;
+  const teacher = Dto.parse(input);
+  const newTeacher = await teachersRepository.create(teacher);
+  res.status(201).json(newTeacher);
 }
 
 async function deleteTeacher(req, res) {
-  // try {
   const id = req.params.id;
   const teacher = await teachersRepository.deleteTeacher(id);
 
   if (teacher) {
-    res.status(200).json(teacher);
+    return res.status(200).json(teacher);
   }
   throw new HTTPError(404, "Teacher could not be deleted");
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Internal Server Error" });
-  // }
 }
 
-export { getAllTeachers, getSingleTeacherById, updateTeacher, createTeacher, deleteTeacher };
+export { getAll, getById, update, create, deleteTeacher };

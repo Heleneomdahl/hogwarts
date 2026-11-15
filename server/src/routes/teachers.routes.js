@@ -5,19 +5,19 @@ const router = express.Router();
 
 // teachers - get all teachers //
 
-router.get("/", teachersController.getAllTeachers);
+router.get("/", teachersController.getAll);
 
 // teachers - get a single teacher //
 
-router.get("/:id", teachersController.getSingleTeacherById);
+router.get("/:id", teachersController.getById);
 
 // teachers - Update a single teacher //
 
-router.put("/:id", teachersController.updateTeacher);
+router.put("/:id", teachersController.update);
 
 // teachers - create a new teacher //
 
-router.post("/", teachersController.createTeacher);
+router.post("/", teachersController.create);
 
 // teachers - delete a single teacher //
 

@@ -1,120 +1,77 @@
 import * as coursesRepository from "../repositories/courses.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
+import Dto from "../dtos/course.dto.js";
 
-const getAllCourses = async (req, res) => {
-  try {
-    const allCourses = await coursesRepository.getAllCourses();
-    console.log(allCourses);
-    res.json(allCourses);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error", code: error.code });
-  }
+const getAll = async (req, res) => {
+  const allCourses = await coursesRepository.getAll();
+  console.log(allCourses);
+  res.status(200).json(allCourses);
 };
 
-async function getSingleCourseById(req, res) {
-  try {
-    const id = req.params.id;
-    const course = await coursesRepository.getCourseById(id);
-
-    if (course) {
-      res.status(200).json(course);
-    } else {
-      res.status(404).json({ error: "Course not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error" });
+async function getById(req, res) {
+  const id = req.params.id;
+  const course = await coursesRepository.getById(id);
+  if (course) {
+    return res.status(200).json(course);
   }
+  throw new HTTPError(404, "Course not found");
 }
 
-async function createCourse(req, res) {
-  try {
-    const { name, teacher_id } = req.body;
-    const course = await coursesRepository.createCourse(name, teacher_id);
-    res.status(201).json(course);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+async function create(req, res) {
+  const input = req.body;
+  const course = Dto.parse(input);
+  const newCourse = await coursesRepository.create(course);
+  return res.status(201).json(newCourse);
 }
 
-async function updateCourse(req, res) {
-  try {
-    const id = req.params.id;
-    const { name, teacher_id } = req.body;
-    const course = await coursesRepository.updateCourse(id, name, teacher_id);
+async function update(req, res) {
+  const id = req.params.id;
+  const input = req.body;
+  const course = Dto.parse(input);
+  const updatedCourse = await coursesRepository.update(id, course);
 
-    if (course) {
-      res.status(200).json(course);
-    } else {
-      res.status(404).json({ error: "Course not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (updatedCourse) {
+    return res.status(200).json(updatedCourse);
   }
+  throw new HTTPError(404, "Course not found");
 }
 
 async function setTeacher(req, res) {
-  try {
-    const id = req.params.id;
-    const teacherId = req.params.teacherId;
-    const course = await coursesRepository.setTeacher(id, teacherId);
+  const id = req.params.id;
+  const teacherId = req.params.teacherId;
+  const course = await coursesRepository.setTeacher(id, teacherId);
 
-    if (course) {
-      res.status(200).json(course);
-    } else {
-      res.status(404).json({ error: "Course not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (course) {
+    return res.status(200).json(course);
   }
+  throw new HTTPError(404, "Course not found");
 }
 
 async function addStudent(req, res) {
-  try {
-    const id = req.params.id;
-    const studentId = req.params.studentId;
-    const added = await coursesRepository.addStudent(id, studentId);
-    res.status(201).json(added);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  const id = req.params.id;
+  const studentId = req.params.studentId;
+  const added = await coursesRepository.addStudent(id, studentId);
+  return res.status(201).json(added);
 }
 
 async function removeStudent(req, res) {
-  try {
-    const id = req.params.id;
-    const studentId = req.params.studentId;
-    const removed = await coursesRepository.removeStudent(id, studentId);
-
-    if (removed) {
-      res.status(200).json(removed);
-    } else {
-      res.status(404).json({ error: "Student not found on course" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  const id = req.params.id;
+  const studentId = req.params.studentId;
+  const removed = await coursesRepository.removeStudent(id, studentId);
+  if (removed) {
+    return res.status(200).json(removed);
   }
+  throw new HTTPError(404, "Student not found on course");
 }
 
 async function deleteCourse(req, res) {
-  try {
-    const id = req.params.id;
-    const course = await coursesRepository.deleteCourse(id);
+  const id = req.params.id;
+  const course = await coursesRepository.deleteCourse(id);
 
-    if (course) {
-      res.status(200).json(course);
-    } else {
-      res.status(404).json({ error: "Course not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (course) {
+    return res.status(200).json(course);
   }
+  throw new HTTPError(404, "Course not found");
 }
 
-export { getAllCourses, getSingleCourseById, createCourse, updateCourse, setTeacher, addStudent, removeStudent, deleteCourse };
+export { getAll, getById, create, update, setTeacher, addStudent, removeStudent, deleteCourse };
