@@ -42,6 +42,23 @@
 | DELETE | `/courses/:id/students/:studentId` | remove a student from a course |
 | DELETE | `/courses/:id`                     | delete a course                |
 
+### Exams
+
+| Method | Route        | Beskrivelse       |
+| ------ | ------------ | ----------------- |
+| GET    | `/exams`     | get all exams     |
+| GET    | `/exams/:id` | get a single exam |
+| POST   | `/exams`     | create a new exam |
+| PUT    | `/exams/:id` | update an exam    |
+| DELETE | `/exams/:id` | delete an exam    |
+
+### Grades
+
+| Method | Route             | Beskrivelse        |
+| ------ | ----------------- | ------------------ |
+| GET    | `/grades`         | get all grades     |
+| GET    | `/grades/:letter` | get a single grade |
+
 ## Endpoint-tests vejledning
 
 Testene ligger i mappen `Hogwarts API-rest` og er lavet til Bruno.
