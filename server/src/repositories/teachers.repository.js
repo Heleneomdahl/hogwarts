@@ -1,15 +1,29 @@
 import pool from "../db.js";
 
 // all teachers
-async function getAllTeachers() {
-  const result = await pool.query("SELECT * FROM hogwarts.teachers");
+async function getAll() {
+  const result = await pool.query(
+    /*sql*/
+    `SELECT teachers.*, houses.name as house_name
+    FROM hogwarts.teachers
+    full JOIN hogwarts.houses
+    ON teachers.house_id = houses.id;`,
+  );
   console.log(result);
   return result.rows;
 }
 
 // get a single teacher by id
-async function getTeacherById(id) {
-  const one = await pool.query("SELECT * FROM hogwarts.teachers WHERE id = $1", [id]);
+async function getById(id) {
+  const one = await pool.query(
+    /*sql*/ `
+    SELECT teachers.*, houses.name as house_name
+    FROM hogwarts.teachers
+    full JOIN hogwarts.houses
+    ON teachers.house_id = houses.id
+    WHERE teachers.id = $1;`,
+    [id],
+  );
   if (one.rowCount === 0) {
     return null;
   } else {
@@ -17,39 +31,42 @@ async function getTeacherById(id) {
   }
 }
 
-// update a single teacher
-async function updateTeacher(id, name, house_id) {
-  const update = await pool.query(
-    `UPDATE hogwarts.teachers
-    SET name = $1, house_id = $2
-    WHERE id = $3
-    RETURNING id, name, house_id`,
-    [name, house_id, id],
-  );
-  if (update.rowCount === 0) {
-    return null;
-  } else {
-    return update.rows[0];
-  }
-}
-
 // create a new teacher
-async function createTeacher(name, house_id) {
+async function create(teacher) {
   const create = await pool.query(
-    `INSERT INTO hogwarts.teachers (name, house_id)
-    VALUES ($1, $2)
-    RETURNING id, name, house_id`,
-    [name, house_id],
+    /*sql*/
+    `INSERT INTO hogwarts.teachers (name, house_id, employment_start, currently_active, deceased)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING id, name, house_id, employment_start, currently_active, deceased`,
+    [teacher.name, teacher.house_id, teacher.employment_start, teacher.currently_active, teacher.deceased],
   );
   return create.rows[0];
 }
 
+// update a single teacher
+async function update(id, newTeacherData) {
+  const update = await pool.query(
+    /*sql*/
+    `UPDATE hogwarts.teachers
+    SET name = $1, house_id = $2, employment_start = $3, currently_active = $4, deceased = $5
+    WHERE id = $6
+    RETURNING id, name, house_id, employment_start, currently_active, deceased`,
+    [newTeacherData.name, newTeacherData.house_id, newTeacherData.employment_start, newTeacherData.currently_active, newTeacherData.deceased, id],
+  );
+  if (update.rowCount === 0) return null;
+
+  const updatedId = update.rows[0].id;
+  return getById(updatedId);
+}
+
 // delete a single teacher
 async function deleteTeacher(id) {
+  /*sql*/
   const remove = await pool.query(
     `DELETE FROM hogwarts.teachers
     WHERE id = $1
-    RETURNING id, name, house_id`,
+    RETURNING id, name, house_id, employment_start, currently_active, deceased
+`,
     [id],
   );
   if (remove.rowCount === 0) {
@@ -59,4 +76,4 @@ async function deleteTeacher(id) {
   }
 }
 
-export { getAllTeachers as getAll, getTeacherById as getSingle, updateTeacher as update, createTeacher, deleteTeacher };
+export { getAll, getById, update, create, deleteTeacher };

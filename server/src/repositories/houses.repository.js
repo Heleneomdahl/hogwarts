@@ -1,15 +1,15 @@
 import pool from "../db.js";
 
 // all houses
-async function getAllHouses() {
-  const result = await pool.query("SELECT * FROM hogwarts.houses");
+async function getAll() {
+  const result = await pool.query(/*sql*/ `SELECT * FROM hogwarts.houses`);
   console.log(result);
   return result.rows;
 }
 
 // get a single house by id
-async function getHouseById(id) {
-  const one = await pool.query("SELECT * FROM hogwarts.houses WHERE id = $1", [id]);
+async function getById(id) {
+  const one = await pool.query(/*sql*/ `SELECT * FROM hogwarts.houses WHERE id = $1`, [id]);
   if (one.rowCount === 0) {
     return null;
   } else {
@@ -17,4 +17,4 @@ async function getHouseById(id) {
   }
 }
 
-export { getAllHouses as getAll, getHouseById as getSingle };
+export { getAll, getById };
